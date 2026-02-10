@@ -34,13 +34,13 @@ LIMIT 10;
 -- Usa SELECT DISTINCT para evitar repeticiones.;
 
 --PRAGMA table_info(regions);
-SELECT DISTINCT *
-FROM regions;
+SELECT DISTINCT region_id
+FROM observations;
 
 -- ¿Cuántas especies distintas (species_id) se han observado?
 -- Combina COUNT con DISTINCT para no contar duplicados;
 -- PRAGMA table_info(species);
-SELECT COUNT(DISTINCT id)
+SELECT COUNT(DISTINCT species_id)
 FROM species;
 
 -- ¿Cuántas observaciones hay para la región con region_id = 2?
@@ -61,7 +61,7 @@ WHERE observation_date = '1998-08-08';
 
 -- ¿Cuál es el region_id con más observaciones?
 -- Agrupa por región y cuenta cuántas veces aparece cada una.;
-PRAGMA table_info(observations);
+-- PRAGMA table_info(observations);
 SELECT region_id, COUNT(*) AS total_observations
 FROM observations
 GROUP BY region_id;
@@ -72,7 +72,7 @@ SELECT species_id, COUNT(*) AS total_observations
 FROM observations
 GROUP BY species_id
 ORDER BY total_observations DESC
-LIMIT 5
+LIMIT 5;
 
 
 -- ¿Qué especies (species_id) tienen menos de 5 registros?
@@ -80,7 +80,7 @@ LIMIT 5
 SELECT species_id, COUNT(*) AS total_observations
 FROM observations
 GROUP BY species_id
-HAVING COUNT(*) < 5
+HAVING COUNT(*) < 5;
 
 -- ¿Qué observadores (observer) registraron más observaciones?
 -- Agrupa por el nombre del observador y cuenta los registros.;
@@ -88,7 +88,7 @@ HAVING COUNT(*) < 5
 SELECT observer, COUNT(*) AS total_observations
 FROM observations
 GROUP BY observer
-ORDER BY total_observations DESC
+ORDER BY total_observations DESC;
 
 
 
@@ -108,10 +108,10 @@ FROM observations o JOIN species s ON s.id = o.species_id;
 
 -- ¿Cuál es la especie más observada por cada región?
 -- Agrupa por región y especie, y ordena por cantidad;
-SELECT species_id, COUNT(*) AS total_observations, region_id
+SELECT region_id, species_id, COUNT(*) AS total_observations
 FROM observations 
 GROUP BY region_id, species_id
-ORDER BY COUNT(*)
+ORDER BY region_id, total_observations DESC;
 
 -- MISSION 4 (NIVEL 4): Manipulación de datos
 
